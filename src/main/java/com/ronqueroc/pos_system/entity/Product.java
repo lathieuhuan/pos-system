@@ -1,6 +1,5 @@
 package com.ronqueroc.pos_system.entity;
 
-import com.ronqueroc.pos_system.constant.EOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,13 +9,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "`order`")
-public class Order {
-
+@Table(name = "product")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Convert(converter = EOrderStatus.Converter.class)
-    private EOrderStatus status;
+    private String name;
+
+    private String code;
+
+    private Long price;
+
+    private String unit;
 }

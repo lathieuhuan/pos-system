@@ -1,8 +1,11 @@
 package com.ronqueroc.pos_system.controller;
 
+import com.ronqueroc.pos_system.constant.EOrderStatus;
 import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +14,7 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @Autowired
     public OrderController(OrderService theOrderService) {
@@ -25,20 +28,20 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public Order getOrder(@PathVariable int orderId) {
-
         Order order = orderService.findById(orderId);
 
         if (order == null) {
-            throw new RuntimeException("Order not found with id" + orderId);
+            throw new RuntimeException("Order not found with id " + orderId);
         }
-
         return order;
     }
 
     @PostMapping
-    public Order addOrder(@RequestBody Order order) {
-        order.setId(0);
-        return orderService.save(order);
+    public ResponseEntity<Order> createNewOrder() {
+        Order order = Order.builder().status(EOrderStatus.PROCESSING).build();
+        Order savedOrder = orderService.save(order);
+
+        return new ResponseEntity<>(savedOrder, HttpStatus.OK);
     }
 
     @PutMapping
@@ -48,7 +51,6 @@ public class OrderController {
 
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable int orderId) {
-
         Order order = orderService.findById(orderId);
 
         if (order == null) {
@@ -56,5 +58,4 @@ public class OrderController {
         }
         orderService.deleteById(orderId);
     }
-
 }

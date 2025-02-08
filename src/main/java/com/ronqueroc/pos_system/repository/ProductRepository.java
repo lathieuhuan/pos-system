@@ -1,9 +1,9 @@
 package com.ronqueroc.pos_system.repository;
 
-import com.ronqueroc.pos_system.entity.Order;
+import com.ronqueroc.pos_system.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@RepositoryRestResource(path="orders")
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+@RepositoryRestResource(path="products")
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 }
