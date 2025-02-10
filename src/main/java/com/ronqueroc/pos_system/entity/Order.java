@@ -1,8 +1,11 @@
 package com.ronqueroc.pos_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ronqueroc.pos_system.constant.EOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Collection;
 
 @Setter
 @Getter
@@ -19,4 +22,8 @@ public class Order {
 
     @Convert(converter = EOrderStatus.Converter.class)
     private EOrderStatus status;
+
+    @OneToMany(mappedBy = "order")
+    @JsonManagedReference
+    private Collection<OrderItem> orderItems;
 }

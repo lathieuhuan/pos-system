@@ -19,7 +19,7 @@ public class Product {
 
     private String code;
 
-    private Long price;
+    private Integer price;
 
     private String unit;
 }

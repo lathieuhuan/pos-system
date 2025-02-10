@@ -1,0 +1,10 @@
+--DROP TABLE IF EXISTS `order`;
+
+CREATE TABLE `order` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(24) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+-- INSERT INTO `order` VALUES(1, 'PROCESSING');
+-- INSERT INTO `order` VALUES(2, 'PROCESSED');
