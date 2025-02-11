@@ -5,6 +5,7 @@ import com.ronqueroc.pos_system.constant.EOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 
 @Setter
@@ -23,7 +24,8 @@ public class Order {
     @Convert(converter = EOrderStatus.Converter.class)
     private EOrderStatus status;
 
-    @OneToMany(mappedBy = "order")
-    @JsonManagedReference
-    private Collection<OrderItem> orderItems;
+    private OffsetDateTime createdAt;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    private Collection<OrderItem> items;
 }

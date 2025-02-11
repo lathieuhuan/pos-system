@@ -4,3 +4,5 @@ CREATE TABLE IF NOT EXISTS `order_item` (
   `quantity` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+SELECT * FROM possystem.order_item;
