@@ -9,8 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "order_item")
-public class OrderItem {
+@Table(name = "order_draft_item")
+public class OrderDraftItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,9 +19,9 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Integer quantity;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "order_draft_id")
+    private OrderDraft orderDraft;
+
+    private Integer quantity;
 }

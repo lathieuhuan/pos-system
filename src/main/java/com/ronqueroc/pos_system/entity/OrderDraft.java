@@ -1,6 +1,5 @@
 package com.ronqueroc.pos_system.entity;
 
-import com.ronqueroc.pos_system.constant.EOrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,17 +12,14 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "`order`")
-public class Order {
+@Table(name = "order_draft")
+public class OrderDraft {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Convert(converter = EOrderStatus.Converter.class)
-    private EOrderStatus status;
-
     private OffsetDateTime createdAt;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private Collection<OrderItem> items;
+    @OneToMany(mappedBy = "orderDraft", fetch = FetchType.EAGER)
+    private Collection<OrderDraftItem> items;
 }

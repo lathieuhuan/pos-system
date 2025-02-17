@@ -1,12 +1,8 @@
 package com.ronqueroc.pos_system.controller;
 
-import com.ronqueroc.pos_system.constant.EOrderStatus;
 import com.ronqueroc.pos_system.entity.Order;
-import com.ronqueroc.pos_system.response.order_response.OrderResponse;
-import com.ronqueroc.pos_system.service.order_service.OrderService;
+import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,14 +14,14 @@ public class OrderController extends BaseController {
     private final OrderService orderService;
 
     @Autowired
-    public OrderController(OrderService theOrderService) {
-        orderService = theOrderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.findAll();
-    }
+//    @GetMapping
+//    public List<Order> getAllOrders() {
+//        return orderService.findAll();
+//    }
 
     @GetMapping("/{orderId}")
     public Object getOrder(@PathVariable int orderId) {
@@ -34,13 +30,13 @@ public class OrderController extends BaseController {
 
     @PostMapping
     public Object createNewOrder() {
-        return success(orderService.createNewOrder());
+        return success(orderService.createOrderDraft());
     }
 
-    @PutMapping
-    public Order updateOrder(@RequestBody Order order) {
-        return orderService.save(order);
-    }
+//    @PutMapping
+//    public Order updateOrder(@RequestBody Order order) {
+//        return orderService.save(order);
+//    }
 
 //    @DeleteMapping("/{orderId}")
 //    public void deleteOrder(@PathVariable int orderId) {
