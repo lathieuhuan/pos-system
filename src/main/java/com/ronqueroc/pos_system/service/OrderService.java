@@ -2,6 +2,7 @@ package com.ronqueroc.pos_system.service;
 
 import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.entity.OrderDraft;
+import com.ronqueroc.pos_system.entity.OrderDraftItem;
 import com.ronqueroc.pos_system.response.order_draft_response.OrderDraftResponse;
 import com.ronqueroc.pos_system.response.order_response.OrderResponse;
 
@@ -19,6 +20,8 @@ public interface OrderService {
     OrderDraftResponse createOrderDraft();
 
     OrderDraft saveDraft(OrderDraft order);
+
+    OrderDraftItem addDraftItem(Integer orderDraftId, Integer productId);
 
 //    Order save(Order order);
 

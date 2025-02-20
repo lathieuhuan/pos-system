@@ -1,6 +1,7 @@
 package com.ronqueroc.pos_system.controller;
 
 import com.ronqueroc.pos_system.entity.Order;
+import com.ronqueroc.pos_system.request.OrderDraftItemAddParam;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class OrderController extends BaseController {
     @PostMapping
     public Object createNewOrder() {
         return success(orderService.createOrderDraft());
+    }
+
+    @PostMapping("/{orderId}/items")
+    public Object addDraftItem(@PathVariable int orderId, @RequestBody OrderDraftItemAddParam param) {
+        return success(orderService.addDraftItem(orderId, param.getProductId()));
     }
 
 //    @PutMapping

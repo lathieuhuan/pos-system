@@ -1,15 +1,10 @@
 package com.ronqueroc.pos_system.controller;
 
-import com.ronqueroc.pos_system.entity.Product;
 import com.ronqueroc.pos_system.request.ProductSearchParam;
-import com.ronqueroc.pos_system.response.product_response.ProductResponse;
 import com.ronqueroc.pos_system.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +22,7 @@ public class ProductController extends BaseController {
     @GetMapping
     public Object search(
             @RequestParam(required = false) String keyword,
-            @SortDefault(sort = "requestCreatedAt", direction = Sort.Direction.DESC) Pageable pageable
+            @SortDefault Pageable pageable
     ) {
         ProductSearchParam param = ProductSearchParam.builder()
                 .keyword(keyword)
