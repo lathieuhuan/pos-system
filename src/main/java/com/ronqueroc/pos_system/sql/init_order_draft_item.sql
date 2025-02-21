@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS `order_draft_item` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 SELECT * FROM possystem.order_draft_item;
+
+DELETE FROM possystem.order_draft_item WHERE id != -1;

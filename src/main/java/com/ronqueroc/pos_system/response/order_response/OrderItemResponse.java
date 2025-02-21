@@ -10,6 +10,8 @@ import lombok.*;
 @Builder
 public class OrderItemResponse {
 
+    private String orderCode;
+
     private Product product;
 
     private Integer quantity;

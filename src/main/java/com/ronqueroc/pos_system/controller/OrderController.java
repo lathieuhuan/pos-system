@@ -1,12 +1,10 @@
 package com.ronqueroc.pos_system.controller;
 
-import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.request.OrderDraftItemAddParam;
+import com.ronqueroc.pos_system.request.OrderDraftItemUpdateParam;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -19,14 +17,9 @@ public class OrderController extends BaseController {
         this.orderService = orderService;
     }
 
-//    @GetMapping
-//    public List<Order> getAllOrders() {
-//        return orderService.findAll();
-//    }
-
-    @GetMapping("/{orderId}")
-    public Object getOrder(@PathVariable int orderId) {
-        return success(orderService.getDetailById(orderId));
+    @GetMapping("/{orderCode}")
+    public Object getOrder(@PathVariable String orderCode) {
+        return success(orderService.getDetailByCode(orderCode));
     }
 
     @PostMapping
@@ -34,23 +27,23 @@ public class OrderController extends BaseController {
         return success(orderService.createOrderDraft());
     }
 
-    @PostMapping("/{orderId}/items")
-    public Object addDraftItem(@PathVariable int orderId, @RequestBody OrderDraftItemAddParam param) {
-        return success(orderService.addDraftItem(orderId, param.getProductId()));
+    @PostMapping("/{orderCode}/items")
+    public Object addDraftItem(@PathVariable String orderCode, @RequestBody OrderDraftItemAddParam param) {
+        return success(orderService.addDraftItem(orderCode, param.getProductId()));
     }
 
-//    @PutMapping
-//    public Order updateOrder(@RequestBody Order order) {
-//        return orderService.save(order);
-//    }
+    @PutMapping("/{orderCode}/items/{productId}")
+    public Object updateOrderItemQuantity(
+            @PathVariable String orderCode,
+            @PathVariable Integer productId,
+            @RequestBody OrderDraftItemUpdateParam param
+    ) {
+        return success(orderService.updateDraftItemQuantity(orderCode, productId, param.getQuantity()));
+    }
 
-//    @DeleteMapping("/{orderId}")
-//    public void deleteOrder(@PathVariable int orderId) {
-//        Order order = orderService.findById(orderId);
-//
-//        if (order == null) {
-//            throw new RuntimeException("Order not found with id " + orderId);
-//        }
-//        orderService.deleteById(orderId);
-//    }
+    @DeleteMapping("/{orderCode}/items/{productId}")
+    public Object deleteDraftItem(@PathVariable String orderCode, @PathVariable Integer productId) {
+        orderService.deleteDraftItem(orderCode, productId);
+        return success();
+    }
 }

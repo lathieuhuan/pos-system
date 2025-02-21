@@ -12,7 +12,8 @@ import java.util.Collection;
 @Setter
 @Builder
 public class OrderResponse {
-    private int id;
+
+    private String code;
 
     private EOrderStatus status;
 

@@ -1,29 +1,17 @@
 package com.ronqueroc.pos_system.service;
 
-import com.ronqueroc.pos_system.entity.Order;
-import com.ronqueroc.pos_system.entity.OrderDraft;
-import com.ronqueroc.pos_system.entity.OrderDraftItem;
-import com.ronqueroc.pos_system.response.order_draft_response.OrderDraftResponse;
+import com.ronqueroc.pos_system.response.order_response.OrderItemResponse;
 import com.ronqueroc.pos_system.response.order_response.OrderResponse;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface OrderService {
 
-    Optional<Order> findById(Integer id);
+    OrderResponse getDetailByCode(String code);
 
-    OrderResponse getDetailById(Integer id);
+    OrderResponse createOrderDraft();
 
-//    List<Order> findAll();
+    OrderItemResponse addDraftItem(String orderCode, Integer productId);
 
-    OrderDraftResponse createOrderDraft();
-
-    OrderDraft saveDraft(OrderDraft order);
-
-    OrderDraftItem addDraftItem(Integer orderDraftId, Integer productId);
-
-//    Order save(Order order);
-
-//    void deleteById(Integer id);
+    OrderItemResponse updateDraftItemQuantity(String orderCode, Integer productId, Integer quantity);
+    
+    void deleteDraftItem(String orderCode, Integer productId);
 }

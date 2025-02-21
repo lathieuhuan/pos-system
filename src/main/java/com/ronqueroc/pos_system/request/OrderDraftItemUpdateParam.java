@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-public class OrderDraftItemAddParam {
+public class OrderDraftItemUpdateParam {
 
-    private Integer productId;
+    private Integer quantity;
 }
