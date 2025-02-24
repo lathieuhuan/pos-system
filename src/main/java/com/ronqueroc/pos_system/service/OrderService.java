@@ -1,17 +1,19 @@
 package com.ronqueroc.pos_system.service;
 
-import com.ronqueroc.pos_system.response.order_response.OrderItemResponse;
-import com.ronqueroc.pos_system.response.order_response.OrderResponse;
+import com.ronqueroc.pos_system.response.OrderItemResponse;
+import com.ronqueroc.pos_system.response.OrderResponse;
 
 public interface OrderService {
 
-    OrderResponse getDetailByCode(String code);
+    OrderResponse getOrderByCode(String code);
 
     OrderResponse createOrderDraft();
 
-    OrderItemResponse addDraftItem(String orderCode, Integer productId);
+    void deleteOrderDraftByCode(String code);
 
-    OrderItemResponse updateDraftItemQuantity(String orderCode, Integer productId, Integer quantity);
+    OrderItemResponse addDraftItem(String orderCode, String productCode);
+
+    OrderItemResponse updateDraftItemQuantity(String orderCode, String productCode, Integer quantity);
     
-    void deleteDraftItem(String orderCode, Integer productId);
+    void deleteDraftItem(String orderCode, String productCode);
 }

@@ -16,11 +16,11 @@ public class OrderDraftItem {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_code", referencedColumnName = "code")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_draft_id")
+    @JoinColumn(name = "order_draft_code", referencedColumnName = "code")
     private OrderDraft orderDraft;
 
     private Integer quantity;

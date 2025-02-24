@@ -2,7 +2,7 @@ package com.ronqueroc.pos_system.projector;
 
 import com.ronqueroc.pos_system.entity.OrderDraftItem;
 import com.ronqueroc.pos_system.entity.OrderItem;
-import com.ronqueroc.pos_system.response.order_response.OrderItemResponse;
+import com.ronqueroc.pos_system.response.OrderItemResponse;
 
 public class OrderItemProjector {
 

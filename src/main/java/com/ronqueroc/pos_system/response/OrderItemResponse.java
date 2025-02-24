@@ -1,4 +1,4 @@
-package com.ronqueroc.pos_system.response.order_response;
+package com.ronqueroc.pos_system.response;
 
 import com.ronqueroc.pos_system.entity.Product;
 import lombok.*;

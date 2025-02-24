@@ -11,14 +11,13 @@ import com.ronqueroc.pos_system.repository.OrderDraftItemRepository;
 import com.ronqueroc.pos_system.repository.OrderDraftRepository;
 import com.ronqueroc.pos_system.repository.OrderRepository;
 import com.ronqueroc.pos_system.repository.ProductRepository;
-import com.ronqueroc.pos_system.response.order_response.OrderItemResponse;
-import com.ronqueroc.pos_system.response.order_response.OrderResponse;
+import com.ronqueroc.pos_system.response.OrderItemResponse;
+import com.ronqueroc.pos_system.response.OrderResponse;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -41,12 +40,18 @@ public class OrderServiceImpl implements OrderService {
         this.productRepo = productRepo;
     }
 
-    @Override
-    public OrderResponse getDetailByCode(String code) {
-        String prefix = Arrays.stream(code.split("_")).findFirst().orElseThrow();
+    private Boolean isOrderDraft(String code) {
+        return code.split("_")[0].equals("OD");
+    }
 
-        if (prefix.equals("OD")) {
-            OrderDraft order = orderDraftRepo.findByCode(code).orElseThrow(() -> new DataNotFoundException());
+    private OrderDraft getOrderDraftByCode(String code) {
+        return orderDraftRepo.findByCode(code).orElseThrow(() -> new DataNotFoundException());
+    }
+
+    @Override
+    public OrderResponse getOrderByCode(String code) {
+        if (isOrderDraft(code)) {
+            OrderDraft order = getOrderDraftByCode(code);
             return OrderProjector.toResponse(order);
         }
 
@@ -65,11 +70,21 @@ public class OrderServiceImpl implements OrderService {
 
         return OrderProjector.toResponse(savedOrderDraft);
     }
-    
+
     @Override
-    public OrderItemResponse addDraftItem(String orderCode, Integer productId) {
+    public void deleteOrderDraftByCode(String code) {
+        if (isOrderDraft(code)) {
+            OrderDraft orderDraft = getOrderDraftByCode(code);
+            orderDraftRepo.delete(orderDraft);
+        } else {
+            throw new RuntimeException("This Order cannot be deleted.");
+        }
+    }
+
+    @Override
+    public OrderItemResponse addDraftItem(String orderCode, String productCode) {
         OrderDraft orderDraft = orderDraftRepo.findByCode(orderCode).orElseThrow(() -> new DataNotFoundException());
-        Product product = productRepo.findById(productId).orElseThrow(() -> new DataNotFoundException());
+        Product product = productRepo.findByCode(productCode).orElseThrow(() -> new DataNotFoundException());
         OrderDraftItem draftItem = OrderDraftItem.builder()
                 .orderDraft(orderDraft)
                 .product(product)
@@ -81,17 +96,14 @@ public class OrderServiceImpl implements OrderService {
         return OrderItemProjector.toResponse(savedDraftItem);
     }
     
-    private OrderDraftItem findOrderDratItem(String orderCode, Integer productId) {
-        OrderDraft orderDraft = orderDraftRepo.findByCode(orderCode).orElseThrow(DataNotFoundException::new);
-        OrderDraftItem item = orderDraftItemRepo.findByOrderDraftIdAndProductId(orderDraft.getId(), productId)
-                .orElseThrow(() -> new RuntimeException("Order Item not found"));
-        
-        return item;
+    private OrderDraftItem findOrderDratItem(String orderCode, String productCode) {
+        return orderDraftItemRepo.findByOrderDraftCodeAndProductCode(orderCode, productCode)
+                .orElseThrow(() -> new DataNotFoundException());
     }
 
     @Override
-    public OrderItemResponse updateDraftItemQuantity(String orderCode, Integer productId, Integer quantity) {
-        OrderDraftItem item = findOrderDratItem(orderCode, productId);
+    public OrderItemResponse updateDraftItemQuantity(String orderCode, String productCode, Integer quantity) {
+        OrderDraftItem item = findOrderDratItem(orderCode, productCode);
         item.setQuantity(quantity);
         OrderDraftItem updatedItem = orderDraftItemRepo.save(item);
 
@@ -99,8 +111,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteDraftItem(String orderCode, Integer productId) {
-        OrderDraftItem item = findOrderDratItem(orderCode, productId);
+    public void deleteDraftItem(String orderCode, String productCode) {
+        OrderDraftItem item = findOrderDratItem(orderCode, productCode);
         orderDraftItemRepo.delete(item);
     }
 }

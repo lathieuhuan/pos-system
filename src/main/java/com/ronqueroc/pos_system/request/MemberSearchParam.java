@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-public class OrderDraftItemAddParam {
-
-    private String productCode;
+public class MemberSearchParam {
+    private String keyword;
 }

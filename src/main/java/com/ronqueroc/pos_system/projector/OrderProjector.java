@@ -3,8 +3,8 @@ package com.ronqueroc.pos_system.projector;
 import com.ronqueroc.pos_system.constant.EOrderStatus;
 import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.entity.OrderDraft;
-import com.ronqueroc.pos_system.response.order_response.OrderItemResponse;
-import com.ronqueroc.pos_system.response.order_response.OrderResponse;
+import com.ronqueroc.pos_system.response.OrderItemResponse;
+import com.ronqueroc.pos_system.response.OrderResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

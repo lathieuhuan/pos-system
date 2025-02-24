@@ -19,7 +19,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("/{orderCode}")
     public Object getOrder(@PathVariable String orderCode) {
-        return success(orderService.getDetailByCode(orderCode));
+        return success(orderService.getOrderByCode(orderCode));
     }
 
     @PostMapping
@@ -27,23 +27,29 @@ public class OrderController extends BaseController {
         return success(orderService.createOrderDraft());
     }
 
+    @DeleteMapping("/{orderCode}")
+    public Object deleteOrderDraft(@PathVariable String orderCode) {
+        orderService.deleteOrderDraftByCode(orderCode);
+        return success();
+    }
+
     @PostMapping("/{orderCode}/items")
     public Object addDraftItem(@PathVariable String orderCode, @RequestBody OrderDraftItemAddParam param) {
-        return success(orderService.addDraftItem(orderCode, param.getProductId()));
+        return success(orderService.addDraftItem(orderCode, param.getProductCode()));
     }
 
-    @PutMapping("/{orderCode}/items/{productId}")
+    @PutMapping("/{orderCode}/items/{productCode}")
     public Object updateOrderItemQuantity(
             @PathVariable String orderCode,
-            @PathVariable Integer productId,
+            @PathVariable String productCode,
             @RequestBody OrderDraftItemUpdateParam param
     ) {
-        return success(orderService.updateDraftItemQuantity(orderCode, productId, param.getQuantity()));
+        return success(orderService.updateDraftItemQuantity(orderCode, productCode, param.getQuantity()));
     }
 
-    @DeleteMapping("/{orderCode}/items/{productId}")
-    public Object deleteDraftItem(@PathVariable String orderCode, @PathVariable Integer productId) {
-        orderService.deleteDraftItem(orderCode, productId);
+    @DeleteMapping("/{orderCode}/items/{productCode}")
+    public Object deleteDraftItem(@PathVariable String orderCode, @PathVariable String productCode) {
+        orderService.deleteDraftItem(orderCode, productCode);
         return success();
     }
 }

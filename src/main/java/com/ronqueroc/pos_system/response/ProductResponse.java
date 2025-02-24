@@ -1,4 +1,4 @@
-package com.ronqueroc.pos_system.response.product_response;
+package com.ronqueroc.pos_system.response;
 
 import lombok.*;
 

@@ -10,5 +10,5 @@ import java.util.Optional;
 @RepositoryRestResource(path="order_draft_items")
 public interface OrderDraftItemRepository extends JpaRepository<OrderDraftItem, Integer> {
     @Transactional
-    Optional<OrderDraftItem> findByOrderDraftIdAndProductId(Integer code, Integer productId);
+    Optional<OrderDraftItem> findByOrderDraftCodeAndProductCode(String orderCode, String productCode);
 }

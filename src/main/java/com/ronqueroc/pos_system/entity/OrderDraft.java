@@ -24,7 +24,7 @@ public class OrderDraft {
 
     private OffsetDateTime createdAt;
 
-    @OneToMany(mappedBy = "orderDraft", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "orderDraft", fetch = FetchType.EAGER)
     private Collection<OrderDraftItem> items;
 
     @PrePersist
