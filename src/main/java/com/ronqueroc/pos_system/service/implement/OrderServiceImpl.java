@@ -1,17 +1,16 @@
 package com.ronqueroc.pos_system.service.implement;
 
+import com.ronqueroc.pos_system.controller.response.OrderItemUpdateResponse;
 import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.entity.OrderDraft;
 import com.ronqueroc.pos_system.entity.OrderDraftItem;
 import com.ronqueroc.pos_system.entity.Product;
 import com.ronqueroc.pos_system.exception.DataNotFoundException;
-import com.ronqueroc.pos_system.projector.OrderItemProjector;
 import com.ronqueroc.pos_system.projector.OrderProjector;
 import com.ronqueroc.pos_system.repository.OrderDraftItemRepository;
 import com.ronqueroc.pos_system.repository.OrderDraftRepository;
 import com.ronqueroc.pos_system.repository.OrderRepository;
 import com.ronqueroc.pos_system.repository.ProductRepository;
-import com.ronqueroc.pos_system.response.OrderItemResponse;
 import com.ronqueroc.pos_system.response.OrderResponse;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderItemResponse addDraftItem(String orderCode, String productCode) {
+    public OrderItemUpdateResponse addDraftItem(String orderCode, String productCode) {
         OrderDraft orderDraft = orderDraftRepo.findByCode(orderCode).orElseThrow(() -> new DataNotFoundException());
         Product product = productRepo.findByCode(productCode).orElseThrow(() -> new DataNotFoundException());
         OrderDraftItem draftItem = OrderDraftItem.builder()
@@ -93,21 +92,29 @@ public class OrderServiceImpl implements OrderService {
 
         OrderDraftItem savedDraftItem = orderDraftItemRepo.save(draftItem);
 
-        return OrderItemProjector.toResponse(savedDraftItem);
+        return OrderItemUpdateResponse.builder()
+                .orderCode(orderDraft.getCode())
+                .quantity(savedDraftItem.getQuantity())
+                .product(savedDraftItem.getProduct())
+                .build();
     }
-    
+
     private OrderDraftItem findOrderDratItem(String orderCode, String productCode) {
         return orderDraftItemRepo.findByOrderDraftCodeAndProductCode(orderCode, productCode)
                 .orElseThrow(() -> new DataNotFoundException());
     }
 
     @Override
-    public OrderItemResponse updateDraftItemQuantity(String orderCode, String productCode, Integer quantity) {
+    public OrderItemUpdateResponse updateDraftItemQuantity(String orderCode, String productCode, Integer quantity) {
         OrderDraftItem item = findOrderDratItem(orderCode, productCode);
         item.setQuantity(quantity);
         OrderDraftItem updatedItem = orderDraftItemRepo.save(item);
 
-        return OrderItemProjector.toResponse(updatedItem);
+        return OrderItemUpdateResponse.builder()
+                .orderCode(orderCode)
+                .quantity(updatedItem.getQuantity())
+                .product(updatedItem.getProduct())
+                .build();
     }
 
     @Override

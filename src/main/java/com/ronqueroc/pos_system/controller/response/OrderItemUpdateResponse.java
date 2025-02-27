@@ -1,6 +1,6 @@
-package com.ronqueroc.pos_system.response;
+package com.ronqueroc.pos_system.controller.response;
 
-import com.ronqueroc.pos_system.entity.Product;
+import com.ronqueroc.pos_system.response.OrderItemResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +12,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class OrderItemResponse {
+public class OrderItemUpdateResponse extends OrderItemResponse {
 
-    private Product product;
+    private String orderCode;
 
-    private Integer quantity;
 }
