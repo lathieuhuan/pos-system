@@ -20,4 +20,6 @@ public class OrderResponse {
     private OffsetDateTime createdAt;
 
     private Collection<OrderItemResponse> items;
-}
+
+    private int totalAmount;
+ }

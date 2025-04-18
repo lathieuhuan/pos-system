@@ -1,5 +1,6 @@
 package com.ronqueroc.pos_system.service.implement;
 
+import com.ronqueroc.pos_system.controller.response.OrderItemDeleteResponse;
 import com.ronqueroc.pos_system.controller.response.OrderItemUpdateResponse;
 import com.ronqueroc.pos_system.entity.Order;
 import com.ronqueroc.pos_system.entity.OrderDraft;
@@ -13,8 +14,11 @@ import com.ronqueroc.pos_system.repository.OrderRepository;
 import com.ronqueroc.pos_system.repository.ProductRepository;
 import com.ronqueroc.pos_system.response.OrderResponse;
 import com.ronqueroc.pos_system.service.OrderService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,6 +29,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDraftRepository orderDraftRepo;
     private final OrderDraftItemRepository orderDraftItemRepo;
     private final ProductRepository productRepo;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public OrderServiceImpl(
@@ -80,10 +87,25 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    private Integer getOrderItemTotalAmount(OrderDraftItem item) {
+        return item.getQuantity() * item.getProduct().getPrice();
+    }
+
+    private Integer getOrderTotalAmountByCode(String orderCode) {
+        entityManager.clear();
+
+        OrderDraft orderDraft = orderDraftRepo.findByCode(orderCode).orElseThrow(() -> new DataNotFoundException());
+        Integer totalGoodsAmount = orderDraft.getItems().stream().mapToInt(this::getOrderItemTotalAmount).sum();
+
+        return totalGoodsAmount;
+    }
+
     @Override
+    @Transactional
     public OrderItemUpdateResponse addDraftItem(String orderCode, String productCode) {
         OrderDraft orderDraft = orderDraftRepo.findByCode(orderCode).orElseThrow(() -> new DataNotFoundException());
         Product product = productRepo.findByCode(productCode).orElseThrow(() -> new DataNotFoundException());
+
         OrderDraftItem draftItem = OrderDraftItem.builder()
                 .orderDraft(orderDraft)
                 .product(product)
@@ -93,9 +115,10 @@ public class OrderServiceImpl implements OrderService {
         OrderDraftItem savedDraftItem = orderDraftItemRepo.save(draftItem);
 
         return OrderItemUpdateResponse.builder()
-                .orderCode(orderDraft.getCode())
+                .orderCode(orderCode)
                 .quantity(savedDraftItem.getQuantity())
                 .product(savedDraftItem.getProduct())
+                .totalAmount(getOrderTotalAmountByCode(orderCode))
                 .build();
     }
 
@@ -114,12 +137,18 @@ public class OrderServiceImpl implements OrderService {
                 .orderCode(orderCode)
                 .quantity(updatedItem.getQuantity())
                 .product(updatedItem.getProduct())
+                .totalAmount(getOrderTotalAmountByCode(orderCode))
                 .build();
     }
 
     @Override
-    public void deleteDraftItem(String orderCode, String productCode) {
+    public OrderItemDeleteResponse deleteDraftItem(String orderCode, String productCode) {
         OrderDraftItem item = findOrderDratItem(orderCode, productCode);
         orderDraftItemRepo.delete(item);
+
+        return OrderItemDeleteResponse.builder()
+                .orderCode(orderCode)
+                .totalAmount(getOrderTotalAmountByCode(orderCode))
+                .build();
     }
 }

@@ -4,7 +4,14 @@ import com.ronqueroc.pos_system.request.OrderDraftItemAddParam;
 import com.ronqueroc.pos_system.request.OrderDraftItemUpdateParam;
 import com.ronqueroc.pos_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/orders")
@@ -49,7 +56,6 @@ public class OrderController extends BaseController {
 
     @DeleteMapping("/{orderCode}/items/{productCode}")
     public Object deleteDraftItem(@PathVariable String orderCode, @PathVariable String productCode) {
-        orderService.deleteDraftItem(orderCode, productCode);
-        return success();
+        return success(orderService.deleteDraftItem(orderCode, productCode));
     }
 }

@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS possystem.order_draft_item;
+DROP TABLE IF EXISTS order_draft_item;
 
-CREATE TABLE IF NOT EXISTS possystem.order_draft_item (
+CREATE TABLE IF NOT EXISTS order_draft_item (
   `id` int NOT NULL AUTO_INCREMENT,
   `order_draft_code` VARCHAR(38) NOT NULL,
   `product_code` VARCHAR(38) NOT NULL,
@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS possystem.order_draft_item (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
-SELECT * FROM possystem.order_draft_item;
+SELECT * FROM order_draft_item;
 
-DELETE FROM possystem.order_draft_item WHERE id != -1;
+DELETE FROM order_draft_item WHERE id != -1;

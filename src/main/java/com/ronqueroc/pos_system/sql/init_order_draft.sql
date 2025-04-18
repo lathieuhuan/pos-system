@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS possystem.order_draft;
+DROP TABLE IF EXISTS order_draft;
 
 CREATE TABLE `order_draft` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -11,6 +11,6 @@ CREATE TABLE `order_draft` (
 
 INSERT INTO `order_draft` (id, created_at) VALUES (1, '2025-02-04 17:00:00');
 
-SELECT * FROM possystem.order_draft;
+SELECT * FROM order_draft;
 
-DELETE FROM possystem.order_draft WHERE id != -1;
+DELETE FROM order_draft WHERE id != -1;

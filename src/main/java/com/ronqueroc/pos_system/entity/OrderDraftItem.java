@@ -15,13 +15,13 @@ public class OrderDraftItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_code", referencedColumnName = "code")
-    private Product product;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_draft_code", referencedColumnName = "code")
+    @JoinColumn(name = "orderDraftCode", referencedColumnName = "code")
     private OrderDraft orderDraft;
+
+    @ManyToOne
+    @JoinColumn(name = "productCode", referencedColumnName = "code")
+    private Product product;
 
     private Integer quantity;
 }

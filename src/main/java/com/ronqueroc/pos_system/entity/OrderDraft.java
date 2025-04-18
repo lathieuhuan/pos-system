@@ -27,6 +27,8 @@ public class OrderDraft {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "orderDraft", fetch = FetchType.EAGER)
     private Collection<OrderDraftItem> items;
 
+    private int totalAmount;
+
     @PrePersist
     public void generateCode() {
         if (this.code == null) {

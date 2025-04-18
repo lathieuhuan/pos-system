@@ -1,2 +1,2 @@
-CREATE DATABASE IF NOT EXISTS `possystem`;
-USE `possystem`;
+CREATE DATABASE IF NOT EXISTS pos_system;
+USE pos_system;
